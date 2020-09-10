@@ -16,6 +16,7 @@ max_key = max(remap_dict.keys())
 remap_lut = np.zeros((max_key + 100), dtype=np.int32)
 remap_lut[list(remap_dict.keys())] = list(remap_dict.values())
 
+# sequences_0.06 : KDTrees labels velodyne
 grid_size = 0.06
 # ustb office data dir
 dataset_path = '/media/xuyan/dataset_disk/semantic_kitti/dataset/sequences'
@@ -44,6 +45,7 @@ for seq_id in seq_list:
             labels = DP.load_label_kitti(join(label_path, str(scan_id[:-4]) + '.label'), remap_lut)
             sub_points, sub_labels = DP.grid_sub_sampling(points, labels=labels, grid_size=grid_size)
             search_tree = KDTree(sub_points)
+            # KDTree
             KDTree_save = join(KDTree_path_out, str(scan_id[:-4]) + '.pkl')
             np.save(join(pc_path_out, scan_id)[:-4], sub_points)
             np.save(join(label_path_out, scan_id)[:-4], sub_labels)
@@ -52,6 +54,7 @@ for seq_id in seq_list:
             if seq_id == '08':
                 proj_path = join(seq_path_out, 'proj')
                 os.makedirs(proj_path) if not exists(proj_path) else None
+                # proj points 
                 proj_inds = np.squeeze(search_tree.query(points, return_distance=False))
                 proj_inds = proj_inds.astype(np.int32)
                 proj_save = join(proj_path, str(scan_id[:-4]) + '_proj.pkl')
