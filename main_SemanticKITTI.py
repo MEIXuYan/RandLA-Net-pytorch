@@ -46,9 +46,8 @@ print(len(TRAIN_DATALOADER), len(TEST_DATALOADER))
 
 
 #################################################   network   #################################################
-
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+CUDA_VISIBLE_DEVICES=2
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 net = Network(cfg)
 net.to(device)
 
@@ -66,11 +65,11 @@ if CHECKPOINT_PATH is not None and os.path.isfile(CHECKPOINT_PATH):
     start_epoch = checkpoint['epoch']
     log_string("-> loaded checkpoint %s (epoch: %d)"%(CHECKPOINT_PATH, start_epoch))
 
-
-if torch.cuda.device_count() > 1:
-    log_string("Let's use %d GPUs!" % (torch.cuda.device_count()))
-    # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
-    net = nn.DataParallel(net)
+# Multi GPU
+# if torch.cuda.device_count() > 1:
+#     log_string("Let's use %d GPUs!" % (torch.cuda.device_count()))
+#     # dim = 0 [30, xxx] -> [10, ...], [10, ...], [10, ...] on 3 GPUs
+#     net = nn.DataParallel(net)
 
 
 
