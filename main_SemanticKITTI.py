@@ -46,7 +46,7 @@ print(len(TRAIN_DATALOADER), len(TEST_DATALOADER))
 
 
 #################################################   network   #################################################
-CUDA_VISIBLE_DEVICES=2
+CUDA_VISIBLE_DEVICES=2,3
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 net = Network(cfg)
 net.to(device)
